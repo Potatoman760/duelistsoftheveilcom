@@ -25,7 +25,7 @@ export const screenshots: Screenshot[] = [
     image: duelMidgame,
     title: "Mid-duel against Elowen",
     mode: "Duel",
-    alt: "A duel in progress against Elowen: units facing off in the Waking World, a pegasus in the Dreaming, and the two Anchors in the middle",
+    alt: "A duel in progress against Elowen: units in the Waking World and the Dreaming, the two Anchors in the middle, and the player's hand along the bottom",
   },
   {
     image: packOpening,

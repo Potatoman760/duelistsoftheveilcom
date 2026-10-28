@@ -5,7 +5,7 @@
 <hr>
 <h2>The card game</h2>
 <p>Bloom Wars: The Veil is a complete trading card game: leaders, Anchors, two battlefields, resources and initiative. Open boosters, chase rares and build any deck you can imagine.</p>
-<p><img src="https://www.duelistsoftheveil.com/itch/duel.webp" alt="A duel in progress against Elowen: units facing off in the Waking World, a pegasus in the Dreaming, and the two Anchors in the middle"></p>
+<p><img src="https://www.duelistsoftheveil.com/itch/duel.webp" alt="A duel in progress against Elowen: units in the Waking World and the Dreaming, the two Anchors in the middle, and the player's hand along the bottom"></p>
 <p>Units fight in the Waking World &mdash; soldiers, knights, golems and war-beasts &mdash; or in the Dreaming, where pegasi, shadow-stalkers and iron-scaled dragons live. Players take turns one action at a time, and claiming the initiative means giving up the rest of the phase to act first in the next. Bring the opposing Anchor to zero and the duel is yours.</p>
 <p><img src="https://www.duelistsoftheveil.com/itch/cards.jpg" alt="Six illustrated cards from First Bloom: a black dragon over a ruined castle, a knight with a green-glowing hand, a phoenix, a sorceress in lightning, an ice dragon and a crowned serpent before a throne"></p>
 <p><strong>First Bloom</strong>, the base set, has over 250 cards. Every one is illustrated, and every ability is scripted and tested.</p>
