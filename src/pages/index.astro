@@ -121,7 +121,8 @@ import malvorenAwake from '../assets/scenes/scene-malvoren-awake.webp';
     align-items: flex-start;
     gap: 18px;
     padding-block: 120px;
-    padding-left: max(var(--gutter), 52%);
+    /* % resolves against the full-bleed section, so cap it at 52% of the shell */
+    padding-left: max(var(--gutter), min(52%, calc(var(--shell) * .52)));
   }
   .teaser-body { margin: 0; font-size: 18px; line-height: 1.65; color: var(--mist); max-width: 520px; }
 

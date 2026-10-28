@@ -1,0 +1,44 @@
+<p><img src="https://bloomwars.com/itch/logo.webp" alt="Bloom Wars: Duelists of the Veil"></p>
+<p><strong>Bloom Wars: Duelists of the Veil is a top-down RPG adventure built around a full trading card game.</strong> You spend your evenings and your paychecks on Bloom Wars: The Veil, the card game everyone in Seedblossom plays. Then a card you don't own turns up on your pillow, and the game starts leaking into the city.</p>
+<p><em>Walk the streets. Open packs. Build a deck. Duel your way to the Veil.</em></p>
+<p><img src="https://bloomwars.com/itch/malvoren-dream.webp" alt="Malvoren in black armour in front of a dreamscape of floating cards and a glowing horizon"></p>
+<hr>
+<h2>The card game</h2>
+<p>Bloom Wars: The Veil is a complete trading card game: leaders, Anchors, two battlefields, resources and initiative. Open boosters, chase rares and build any deck you can imagine.</p>
+<p><img src="https://bloomwars.com/itch/duel.webp" alt="A duel in progress: units on both sides of the Waking World and the Dreaming, two Anchors in the middle, and the player's hand along the bottom"></p>
+<p>Units fight in the Waking World &mdash; soldiers, knights, golems and war-beasts &mdash; or in the Dreaming, where pegasi, shadow-stalkers and iron-scaled dragons live. Players take turns one action at a time, and claiming the initiative means giving up the rest of the phase to act first in the next. Bring the opposing Anchor to zero and the duel is yours.</p>
+<p><img src="https://bloomwars.com/itch/cards.jpg" alt="Six illustrated cards from First Bloom: a black dragon over a ruined castle, a knight with a green-glowing hand, a phoenix, a sorceress in lightning, an ice dragon and a crowned serpent before a throne"></p>
+<p><strong>First Bloom</strong>, the base set, has over 250 cards. Every one is illustrated, and every ability is scripted and tested.</p>
+<p><img src="https://bloomwars.com/itch/pack-opening.webp" alt="Sixteen cards from a freshly opened booster laid out in two rows, with a leader and an Anchor first"></p>
+<hr>
+<h2>The adventure</h2>
+<p>Walk Seedblossom in classic top-down style: six districts, the roads between them, card shops, caf&eacute;s, parks and a place of your own. Talk to everyone. Some of them want a duel.</p>
+<p><img src="https://bloomwars.com/itch/mb-collectibles.webp" alt="A top-down card shop interior with a glass counter, shelves of cards and Mabel speaking in a dialogue box"></p>
+<p>Every district has a card shop, and every shop has a Keeper who holds a ring. Beat them in order and the road to the next district opens. Nobody has ever wondered what the rings are for.</p>
+<p><img src="https://bloomwars.com/itch/keepers.jpg" alt="The six Keepers in ring order: Yulia, Sylvie, Maren, Caelwen, Seraphine and Morwenna"></p>
+<p>A best friend who keeps a tally of his losses, a streamer with a chat full of goblins, a slime in the park, a queen in a hooded cloak that fools no one, and a woman who visits your dreams.</p>
+<p><img src="https://bloomwars.com/itch/neon-row.webp" alt="A top-down neon-lit street with a tattoo parlour, a record shop and people out for the night"></p>
+<hr>
+<h2>The story</h2>
+<p><img src="https://bloomwars.com/itch/lights-out.jpg" alt="A packed arena in darkness, with six rings glowing on a table at its centre"></p>
+<p>Bloom Wars' designer really did dream it. Its cards are glimpses of real beings in the Dreaming, and the Veil that keeps the two worlds apart is slipping. Where it thins, the Dreaming has one law: two wills, two hosts, one field. So you fight with cards.</p>
+<p>Warm slice-of-life with a goofy streak that grows into urban fantasy. The stakes are real, but nobody gets gored: in the Dreaming, defeat means being sent back.</p>
+<p><img src="https://bloomwars.com/itch/city-remade.jpg" alt="A city street overgrown with giant glowing flowers under a violet sky"></p>
+<hr>
+<h2>Features</h2>
+<p><img src="https://bloomwars.com/itch/deck-builder.webp" alt="The deck builder: faction, cost and type filters on the left, a grid of cards, and the deck list on the right"></p>
+<ul>
+<li><strong>A real TCG at its heart</strong> &mdash; leaders, Anchors, two battlefields, resources, initiative and keywords like Sentinel, Ambush, Raid and Overwhelm.</li>
+<li><strong>250+ cards in First Bloom</strong> &mdash; open boosters, chase rares and build any deck in the deck builder.</li>
+<li><strong>Six factions to mix</strong> &mdash; the Verdant Covenant, Iron Syndicate, Unbound, Somnial Veil, Astral Collegium and Gilded Court. Your leader and your Anchor decide which ones your deck plays cheaply.</li>
+<li><strong>The Keeper circuit</strong> &mdash; six districts, six card shops, six rings, each Keeper harder than the last.</li>
+<li><strong>AI opponents with their own decks</strong> &mdash; every rival plays their own style, from aggro to control.</li>
+<li><strong>A city to explore</strong> &mdash; friends, rivals, side duels and wild beasts, plus a phone for contacts, quests and saves.</li>
+<li><strong>Easy to learn</strong> &mdash; the prologue's duel walks you through everything, and in every duel, everything you can do glows green.</li>
+<li><strong>Controller support</strong> &mdash; keyboard and mouse or an Xbox-layout gamepad, and a Steam Controller works through Steam Input.</li>
+</ul>
+<p><img src="https://bloomwars.com/itch/card-preview.webp" alt="The Malvoren leader card shown full size, beside her deployed unit side"></p>
+<hr>
+<h2>Status</h2>
+<p>Bloom Wars is in active development. The prologue and all four acts are playable, with six Keepers, the Gilded Court's lieutenants, wild beasts and trainers to duel along the way. Art, balance and polish are still improving.</p>
+<p><a href="https://bloomwars.com/">Website</a> &middot; <a href="https://bloomwars.com/how-to-play/">How to play</a> &middot; <a href="https://bloomwars.com/story/">Story</a> &middot; <a href="https://bloomwars.com/faq/">FAQ</a> &middot; <a href="https://patreon.com/Potatoman760">Patreon</a> &middot; <a href="https://discord.gg/BsgA9Tb4F">Discord</a></p>
