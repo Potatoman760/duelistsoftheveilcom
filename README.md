@@ -1,4 +1,4 @@
-# bloomwars.com
+# duelistsoftheveil.com
 
 Astro site for **Bloom Wars: Duelists of the Veil**, the card-battling RPG
 adventure in `../BreedhavenCard`. Builds to fully static HTML and deploys to
@@ -70,5 +70,5 @@ Everything on the site comes from `../BreedhavenCard`:
 - `site.storeUrl`: the itch.io or Steam page. Until it's set, the footer shows
   it as a placeholder.
 - `site.patreonUrl` and `site.discordUrl` currently point at Breedhaven's.
-- `astro.config.mjs` `site` and `wrangler.jsonc` `name` assume `bloomwars.com`
-  and a `bloomwarscom` Pages project.
+- `astro.config.mjs` `site` is `https://www.duelistsoftheveil.com`; `wrangler.jsonc`
+  `name` assumes a `bloomwarscom` Pages project.

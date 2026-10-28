@@ -5,7 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const HOST = "https://bloomwars.com/itch/";
+const HOST = "https://www.duelistsoftheveil.com/itch/";
 
 const html = fs.readFileSync(path.join(__dirname, "description.html"), "utf8");
 

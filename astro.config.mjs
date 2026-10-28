@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	// Used for canonical URLs, sitemaps and RSS. Update if the domain differs.
-	site: 'https://bloomwars.com',
+	site: 'https://www.duelistsoftheveil.com',
 
 	// Prerender everything to plain HTML. No adapter, no Cloudflare Functions —
 	// `dist/` is uploaded to Cloudflare Pages as-is.

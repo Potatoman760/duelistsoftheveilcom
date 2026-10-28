@@ -25,7 +25,7 @@ export const screenshots: Screenshot[] = [
     image: duelMidgame,
     title: "Mid-duel against Elowen",
     mode: "Duel",
-    alt: "A duel in progress: units on both sides of the Waking World and the Dreaming, two Anchors in the middle, and the player's hand along the bottom",
+    alt: "A duel in progress against Elowen: units facing off in the Waking World, a pegasus in the Dreaming, and the two Anchors in the middle",
   },
   {
     image: packOpening,
@@ -61,7 +61,7 @@ export const screenshots: Screenshot[] = [
     image: duelOpening,
     title: "Opening hand against Cade",
     mode: "Duel",
-    alt: "The start of a duel with a crowded board and a keep or mulligan choice for the opening hand",
+    alt: "The start of a duel against Cade: an empty board, the opening hand fanned along the bottom, and a keep or mulligan choice",
   },
   {
     image: lanternRow,
