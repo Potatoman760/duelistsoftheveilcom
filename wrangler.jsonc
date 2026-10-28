@@ -1,0 +1,7 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "bloomwarscom",
+	"compatibility_date": "2026-08-29",
+	// Static-only Pages project: wrangler just uploads what `astro build` emits.
+	"pages_build_output_dir": "./dist"
+}

@@ -1,0 +1,133 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { copy } from "../data/copy";
+import { faq, faqOpenCount } from "../data/faq";
+
+/** Structured data so the questions can surface in search results. */
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((entry) => ({
+    "@type": "Question",
+    name: entry.q,
+    acceptedAnswer: { "@type": "Answer", text: entry.a.join(" ") },
+  })),
+};
+---
+
+<Layout title={copy.faq.pageTitle} description={copy.faq.description}>
+  <section class="page vellum grain">
+    <div class="shell inner">
+      <header class="head">
+        <span class="kicker violet">{copy.faq.kicker}</span>
+        <h1 class="h2 big">{copy.faq.heading}</h1>
+        <p class="lede narrow">{copy.faq.lede}</p>
+      </header>
+
+      <div class="list">
+        {
+          faq.map((entry, i) => (
+            <details class="item ink-box" open={i < faqOpenCount}>
+              <summary>
+                <span class="q">{entry.q}</span>
+                <svg
+                  class="chev"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </summary>
+              <div class="a">
+                {entry.a.map((para) => (
+                  <p>{para}</p>
+                ))}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} slot="after" />
+</Layout>
+
+<style>
+  .page { padding-block: 76px 96px; }
+
+  .inner {
+    position: relative;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 28px;
+  }
+
+  .big { font-size: clamp(36px, 4.8vw, 58px); }
+  .narrow { max-width: 620px; }
+
+  .list { display: flex; flex-direction: column; gap: 16px; }
+
+  .item { background: var(--vellum-hi); }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 44px;
+    padding: 20px 24px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--ink);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--veil-deep); }
+
+  .q {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .chev { flex: 0 0 auto; color: var(--veil); transition: transform .2s ease; }
+  .item[open] .chev { transform: rotate(180deg); }
+
+  .a {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-top: 2px solid var(--vellum-2);
+    padding: 18px 0 22px;
+    margin-inline: 24px;
+  }
+
+  .a p { margin: 0; font-size: 17px; line-height: 1.7; color: var(--ink-2); text-wrap: pretty; }
+
+  @media (max-width: 900px) {
+    .page { padding-block: 40px 56px; }
+    .inner { gap: 28px; }
+    .list { gap: 12px; }
+    summary { padding: 16px 18px; gap: 14px; }
+    .a { margin-inline: 18px; padding-bottom: 18px; }
+    .a p { font-size: 16.5px; }
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import { links, nav, site } from '../data/site';
+import DiscordIcon from './DiscordIcon.astro';
+import { copy } from '../data/copy';
+import { linkAttrs } from '../lib/links';
+import logo from '../assets/brand/bloom-wars-logo.png';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell inner">
+    <div class="top">
+      <div class="about">
+        <div class="brand">
+          <Image src={logo} alt={site.name} widths={[220, 440]} sizes="220px" />
+        </div>
+        <p class="blurb">{copy.footer.blurb}</p>
+      </div>
+
+      <nav class="cols" aria-label="Footer">
+        <div class="col">
+          <span class="col-head">{copy.footer.siteHeading}</span>
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </div>
+        <div class="col">
+          <span class="col-head">{copy.footer.elsewhereHeading}</span>
+          {
+            links.map((link) =>
+              link.placeholder ? (
+                <span class="placeholder">{link.label}</span>
+              ) : (
+                <a href={link.href} {...linkAttrs(link.href)}>
+                  {link.icon === 'discord' && <DiscordIcon size={16} />}
+                  {link.label}
+                </a>
+              ),
+            )
+          }
+        </div>
+      </nav>
+    </div>
+
+    <div class="bottom">
+      <span>&copy; {year} {site.studio}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--night);
+    border-top: 2px solid var(--night-3);
+    padding-block: 56px 40px;
+  }
+
+  .inner { display: flex; flex-direction: column; gap: 34px; }
+
+  .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 44px;
+    flex-wrap: wrap;
+  }
+
+  .about { display: flex; flex-direction: column; gap: 14px; max-width: 380px; }
+
+  .brand :global(img) { width: 220px; height: auto; }
+
+  .blurb { margin: 0; font-size: 15px; line-height: 1.6; color: var(--mist-3); }
+
+  .cols { display: flex; gap: 48px; flex-wrap: wrap; }
+  .col { display: flex; flex-direction: column; gap: 10px; }
+
+  .col-head {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--mist-3);
+  }
+
+  .col a,
+  .col .placeholder {
+    font-size: 15px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .col a { color: var(--mist); }
+  .col a:hover { color: var(--gold-lite); }
+  .col .placeholder { align-self: flex-start; min-height: 0; margin-top: 6px; font-size: 14px; }
+
+  .bottom {
+    border-top: 2px solid var(--night-2);
+    padding-top: 24px;
+    font-size: 14px;
+    color: var(--mist-3);
+  }
+</style>

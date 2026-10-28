@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { copy } from '../data/copy';
+---
+
+<Layout title={copy.notFound.pageTitle} description={copy.notFound.description}>
+  <section class="page stars">
+    <div class="shell inner">
+      <span class="kicker gold">{copy.notFound.kicker}</span>
+      <p class="code">{copy.notFound.code}</p>
+      <h1 class="h2 pale">{copy.notFound.heading}</h1>
+      <p class="lede">{copy.notFound.lede}</p>
+      <a class="btn btn-primary home" href="/">{copy.notFound.cta}</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page {
+    background: var(--night);
+    padding-block: 96px 120px;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .inner { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  .code {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: .9;
+    color: var(--night-4);
+  }
+
+  .lede { max-width: 520px; }
+
+  .home { margin-top: 14px; }
+</style>

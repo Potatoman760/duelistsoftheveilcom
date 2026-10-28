@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Pillars from '../components/Pillars.astro';
+import Carousel from '../components/Carousel.astro';
+import CardFace from '../components/CardFace.astro';
+import FactionGrid from '../components/FactionGrid.astro';
+import KeeperLadder from '../components/KeeperLadder.astro';
+import CharacterCard from '../components/CharacterCard.astro';
+import ScreenshotCard from '../components/ScreenshotCard.astro';
+import PatreonBand from '../components/PatreonBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+
+import { site } from '../data/site';
+import { copy } from '../data/copy';
+import { showcase } from '../data/cards';
+import { characters } from '../data/cast';
+import { screenshots } from '../data/screenshots';
+import malvorenAwake from '../assets/scenes/scene-malvoren-awake.webp';
+---
+
+<Layout title={site.name}>
+  <Hero />
+
+  <Pillars />
+
+  <!-- ---------------- cards ---------------- -->
+  <section class="cards stars">
+    <div class="shell inner">
+      <Carousel label={copy.cards.railLabel} total={showcase.length} perView={4} gap={24} cardMobile="232px" onInk>
+        <div slot="heading" class="rail-head">
+          <span class="kicker gold">{copy.cards.kicker}</span>
+          <h2 class="h2 pale">{copy.cards.heading}</h2>
+          <p class="lede">{copy.cards.lede}</p>
+        </div>
+        {showcase.map((card) => <div class="card-slot"><CardFace card={card} /></div>)}
+      </Carousel>
+    </div>
+  </section>
+
+  <KeeperLadder />
+
+  <FactionGrid />
+
+  <!-- ---------------- characters ---------------- -->
+  <section class="chars vellum grain">
+    <div class="shell inner">
+      <Carousel label={copy.charactersSection.railLabel} total={characters.length} perView={5} gap={18} cardMobile="168px">
+        <div slot="heading" class="rail-head">
+          <span class="kicker violet">{copy.charactersSection.kicker}</span>
+          <h2 class="h2">{copy.charactersSection.heading}</h2>
+          <p class="lede">{copy.charactersSection.sub}</p>
+        </div>
+        {characters.map((member) => <CharacterCard member={member} />)}
+      </Carousel>
+    </div>
+  </section>
+
+  <!-- ---------------- story teaser ---------------- -->
+  <section class="teaser">
+    <Image src={malvorenAwake} alt="" widths={[900, 1440, 1920]} sizes="100vw" class="teaser-art" />
+    <div class="teaser-wash"></div>
+    <div class="shell teaser-inner">
+      <span class="kicker gold">{copy.storyTeaser.kicker}</span>
+      <h2 class="h2 pale">{copy.storyTeaser.heading}</h2>
+      <p class="teaser-body">{copy.storyTeaser.body}</p>
+      <a class="btn btn-violet" href="/story/">{copy.storyTeaser.cta}</a>
+    </div>
+  </section>
+
+  <!-- ---------------- screenshots ---------------- -->
+  <section class="shots stars">
+    <div class="shell inner">
+      <Carousel label={copy.screenshots.railLabel} total={screenshots.length} perView={3} gap={24} cardMobile="300px" onInk>
+        <div slot="heading" class="rail-head">
+          <span class="kicker gold">{copy.screenshots.kicker}</span>
+          <h2 class="h2 pale">{copy.screenshots.heading}</h2>
+          <p class="lede">{copy.screenshots.lede}</p>
+        </div>
+        {screenshots.map((shot, i) => <ScreenshotCard shot={shot} id={`shot-${i}`} />)}
+      </Carousel>
+    </div>
+  </section>
+
+  <PatreonBand />
+
+  <Lightbox slot="after" />
+</Layout>
+
+<style>
+  .inner { position: relative; display: flex; flex-direction: column; gap: 44px; }
+
+  .rail-head { display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
+
+  .cards { background: var(--night); padding-block: 92px 96px; }
+  .card-slot { padding-bottom: 8px; }
+
+  .chars { padding-block: 88px 92px; }
+
+  .shots { background: var(--night); padding-block: 92px 96px; }
+
+  /* --- story teaser --- */
+
+  .teaser {
+    position: relative;
+    overflow: hidden;
+    background: var(--night);
+    border-block: 3px solid var(--ink);
+  }
+  .teaser-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .teaser-wash {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(17 12 29 / .2) 0%, rgb(17 12 29 / .7) 45%, var(--night) 85%);
+  }
+  .teaser-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding-block: 120px;
+    padding-left: max(var(--gutter), 52%);
+  }
+  .teaser-body { margin: 0; font-size: 18px; line-height: 1.65; color: var(--mist); max-width: 520px; }
+
+  @media (max-width: 900px) {
+    .inner { gap: 24px; }
+    .cards, .shots { padding-block: 48px 52px; }
+    .chars { padding-block: 46px 48px; }
+    .teaser-wash { background: linear-gradient(180deg, rgb(17 12 29 / .2) 0%, rgb(17 12 29 / .85) 45%, var(--night) 75%); }
+    .teaser-inner { padding: 260px var(--gutter) 52px; }
+    .teaser-body { font-size: 16.5px; }
+  }
+</style>

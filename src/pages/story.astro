@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import KeeperLadder from '../components/KeeperLadder.astro';
+import PatreonBand from '../components/PatreonBand.astro';
+import { copy } from '../data/copy';
+import { acts } from '../data/story';
+import dreamVoid from '../assets/scenes/dream-void.webp';
+
+const t = copy.story;
+---
+
+<Layout title={t.pageTitle} description={t.description}>
+  <section class="intro">
+    <Image src={dreamVoid} alt="" widths={[900, 1440, 1920]} sizes="100vw" class="intro-art" loading="eager" />
+    <div class="intro-wash"></div>
+    <div class="shell intro-inner">
+      <span class="kicker gold">{t.kicker}</span>
+      <h1 class="h1 pale">{t.heading}</h1>
+      <p class="lede">{t.lede}</p>
+    </div>
+  </section>
+
+  <section class="acts stars">
+    <div class="shell">
+      <ol class="act-list">
+        {
+          acts.map((act, i) => (
+            <li class:list={['act', { flip: i % 2 === 1 }]}>
+              <Image src={act.art} alt={act.alt} widths={[600, 1000]} sizes="(max-width: 900px) 92vw, 560px" class="act-art ink-box" />
+              <div class="act-text">
+                <span class="kicker gold">{act.number}</span>
+                <h2 class="h2 pale">{act.title}</h2>
+                <p>{act.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <KeeperLadder />
+
+  <PatreonBand />
+</Layout>
+
+<style>
+  .intro { position: relative; overflow: hidden; background: var(--night); border-bottom: 3px solid var(--ink); }
+  .intro-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .intro-wash { position: absolute; inset: 0; background: linear-gradient(0deg, var(--night) 0%, rgb(17 12 29 / .4) 60%); }
+  .intro-inner { position: relative; display: flex; flex-direction: column; gap: 16px; padding-block: 120px 80px; max-width: 860px; margin-inline: auto; text-align: center; align-items: center; }
+  .intro .lede { color: var(--mist); max-width: 640px; }
+
+  .acts { background: var(--night); padding-block: 72px 100px; }
+
+  .act-list { position: relative; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 72px; }
+
+  .act { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .act.flip .act-art { order: 2; }
+
+  .act-art { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .act-text { display: flex; flex-direction: column; gap: 14px; }
+  .act-text p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--mist); text-wrap: pretty; }
+
+  @media (max-width: 900px) {
+    .intro-inner { padding-block: 72px 48px; text-align: left; align-items: flex-start; }
+    .acts { padding-block: 40px 56px; }
+    .act-list { gap: 44px; }
+    .act { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .act.flip .act-art { order: 0; }
+    .act-text p { font-size: 16.5px; }
+  }
+</style>

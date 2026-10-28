@@ -1,0 +1,348 @@
+/* ==========================================================================
+   Bloom Wars — design tokens and shared primitives.
+   Night violet for the Veil, vellum for reading, and the logo's gold. The six
+   faction colours are the stroke colours of the game's own aspect sigils
+   (BreedhavenCard/game/assets/ui/aspects/*.svg).
+   ========================================================================== */
+
+:root {
+  /* night — the Veil */
+  --night: #110c1d;
+  --night-2: #1c1530;
+  --night-3: #2b2246;
+  --night-4: #463a66;
+
+  /* mist — text on night */
+  --mist-hi: #f6f1fc;
+  --mist: #ddd3ec;
+  --mist-2: #b3a6c9;
+  --mist-3: #85799c;
+
+  /* vellum — the light sections */
+  --vellum-hi: #fbf7ef;
+  --vellum: #f1eadc;
+  --vellum-2: #e4dac6;
+  --vellum-3: #cfc2a8;
+
+  /* ink on vellum */
+  --ink: #17111f;
+  --ink-2: #3a3147;
+  --ink-3: #635a70;
+
+  /* accent — the Veil's violet */
+  --veil: #7d4fe0;
+  --veil-deep: #4f2aa3;
+  --veil-lite: #c4acff;
+
+  /* metallic — the logo's gold */
+  --gold: #d9a845;
+  --gold-deep: #8d6a1e;
+  --gold-lite: #f2d791;
+
+  /* the six factions */
+  --verdant: #7ccb6e;
+  --iron: #9db4c8;
+  --unbound: #f2904f;
+  --somnial: #a88ce6;
+  --astral: #8cc8f0;
+  --gilded: #f3d46a;
+
+  --font-display: 'Fraunces Variable', Fraunces, Georgia, 'Times New Roman', serif;
+  --font-body: 'Figtree Variable', Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --shell: 1200px;
+  --gutter: 40px;
+
+  color-scheme: dark;
+}
+
+@media (max-width: 900px) {
+  :root { --gutter: 16px; }
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--mist);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* height:auto is load-bearing: Astro's <Image> emits width/height attributes,
+   and without it max-width shrinks the width while the height attribute holds,
+   stretching every constrained image vertically. */
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--veil-lite); text-decoration: none; }
+a:hover { color: var(--gold-lite); }
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* --- textures ------------------------------------------------------------ */
+
+/* starfield for night sections */
+.stars { position: relative; }
+.stars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .5;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, var(--mist-hi), transparent),
+    radial-gradient(1px 1px at 34% 72%, var(--mist), transparent),
+    radial-gradient(1.5px 1.5px at 58% 28%, var(--gold-lite), transparent),
+    radial-gradient(1px 1px at 76% 64%, var(--mist-hi), transparent),
+    radial-gradient(1px 1px at 88% 12%, var(--veil-lite), transparent),
+    radial-gradient(1px 1px at 22% 88%, var(--mist), transparent),
+    radial-gradient(1.5px 1.5px at 66% 92%, var(--veil-lite), transparent);
+  background-size: 420px 420px;
+}
+
+/* fibrous grain for vellum sections; inline SVG so it costs no request */
+.grain { position: relative; }
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .45;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23f)' opacity='.22'/></svg>");
+}
+
+/* comic halftone, pale dots for night grounds */
+.halftone { position: relative; }
+.halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .07;
+  background-image: radial-gradient(var(--mist-hi) 1.1px, transparent 1.2px);
+  background-size: 6px 6px;
+}
+
+/* --- ink borders --------------------------------------------------------- */
+
+.ink-box { border: 3px solid var(--ink); box-shadow: 6px 7px 0 rgb(0 0 0 / .45); }
+.ink-box-sm { border: 2px solid var(--ink); box-shadow: 4px 5px 0 rgb(0 0 0 / .4); }
+
+/* --- layout -------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.vellum { background: var(--vellum); color: var(--ink); }
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.section-head .lede { max-width: 640px; }
+
+@media (max-width: 900px) {
+  .section-head { align-items: flex-start; text-align: left; }
+}
+
+/* --- type ---------------------------------------------------------------- */
+
+.kicker {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+
+.h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 6.4vw, 88px);
+  line-height: .96;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(30px, 3.6vw, 50px);
+  line-height: 1.04;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.2;
+}
+
+.lede {
+  margin: 0;
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.65;
+  color: var(--mist-2);
+  text-wrap: pretty;
+}
+.vellum .lede { color: var(--ink-2); }
+
+.gold { color: var(--gold); }
+.violet { color: var(--veil); }
+.pale { color: var(--mist-hi); }
+
+/* --- buttons ------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding-inline: 26px;
+  border: 3px solid var(--ink);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 5px 6px 0 var(--ink);
+  transition: transform .12s, box-shadow .12s;
+}
+.btn:hover { transform: translate(2px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+.btn-primary { background: var(--gold); color: var(--ink); }
+.btn-primary:hover { color: var(--ink); }
+.btn-violet { background: var(--veil); color: var(--mist-hi); }
+.btn-violet:hover { color: var(--mist-hi); }
+.btn-ghost { background: var(--vellum); color: var(--ink); }
+.btn-ghost:hover { color: var(--ink); }
+
+/* --- carousels ----------------------------------------------------------- */
+
+/* The rail is a native scroll container, so it works with JS off and with a
+   trackpad; the arrows just drive scrollBy. */
+.rail {
+  display: flex;
+  gap: var(--rail-gap, 18px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* `proximity`, not `mandatory`: mandatory re-snaps every programmatic scroll
+     back to the nearest point and makes scrollBy/scrollLeft ineffective here */
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  /* bleed past the shell so cards can run to the screen edge on a phone */
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  /* keeps the first card's snap point at scrollLeft 0 rather than at the gutter */
+  scroll-padding-inline: var(--gutter);
+  padding-block: 14px 14px;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+
+/* Card sizing lives here rather than in the component, because slotted cards
+   are rendered in the *page's* style scope and a component's scoped rules
+   would never reach them. On a phone every rail uses a fixed card width so the
+   next card peeks; from 901px up, exactly --per-view cards fill the shell. */
+.rail > * {
+  scroll-snap-align: start;
+  flex: 0 0 var(--card-mobile, 280px);
+  width: var(--card-mobile, 280px);
+}
+
+@media (min-width: 901px) {
+  .rail > * {
+    --card-w: calc((100% - (var(--per-view, 3) - 1) * var(--rail-gap, 18px)) / var(--per-view, 3));
+    flex-basis: var(--card-w);
+    width: var(--card-w);
+  }
+}
+
+.rail-controls { display: flex; align-items: center; gap: 18px; }
+
+.rail-count {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .12em;
+  color: var(--mist-3);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rail-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vellum);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  cursor: pointer;
+  box-shadow: 4px 5px 0 var(--ink);
+  transition: transform .12s, box-shadow .12s;
+}
+.rail-btn:hover { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+/* ghosted rather than filled, so one disabled state reads on vellum and night */
+.rail-btn[disabled] {
+  background: rgb(133 121 156 / .16);
+  color: var(--mist-3);
+  border-color: var(--mist-3);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+/* arrows are a pointer affordance; on touch the rail is swiped directly */
+@media (max-width: 900px) {
+  .rail-controls { display: none; }
+}
+
+/* --- cards --------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.card:hover { transform: translate(-3px, -4px); box-shadow: 9px 11px 0 rgb(0 0 0 / .5); }
+
+/* --- motion -------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

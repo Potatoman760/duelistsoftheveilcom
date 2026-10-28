@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+import { copy } from '../data/copy';
+import { linkAttrs } from '../lib/links';
+import { showcase } from '../data/cards';
+import CardFace from './CardFace.astro';
+import logo from '../assets/brand/bloom-wars-logo.png';
+import backdrop from '../assets/scenes/battle-backdrop.webp';
+
+/** The three cards fanned beside the pitch: hero, villain, beast. */
+const fan = ['SOR_051', 'SOR_087', 'SOR_102'].map((id) => showcase.find((c) => c.id === id)!);
+---
+
+<section class="hero">
+  <Image
+    src={backdrop}
+    alt=""
+    widths={[900, 1440, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="backdrop"
+  />
+  <div class="wash"></div>
+
+  <div class="shell inner">
+    <div class="col">
+      <span class="kicker gold">{site.tagline}</span>
+
+      <h1 class="hero-logo">
+        <Image
+          src={logo}
+          alt={site.name}
+          widths={[640, 1280]}
+          sizes="(max-width: 900px) 92vw, 600px"
+          loading="eager"
+        />
+      </h1>
+
+      <p class="pitch" set:html={copy.hero.pitch} />
+      <p class="pitch dim">{copy.hero.pitchDim}</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href={site.patreonUrl} {...linkAttrs(site.patreonUrl)}>
+          {copy.hero.cta}
+        </a>
+        <a class="btn btn-ghost" href="/how-to-play/">{copy.hero.secondary}</a>
+      </div>
+    </div>
+
+    <div class="fan" aria-hidden="true">
+      {fan.map((card, i) => (
+        <div class={`slot slot-${i}`}>
+          <CardFace card={card} sizes="260px" eager />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--night);
+    border-bottom: 3px solid var(--ink);
+    overflow: hidden;
+  }
+
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .7;
+  }
+
+  .wash {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(96deg, var(--night) 0%, rgb(17 12 29 / .9) 38%, rgb(17 12 29 / .3) 72%, rgb(17 12 29 / .55) 100%),
+      linear-gradient(0deg, var(--night) 0%, transparent 30%);
+  }
+
+  .inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 32px;
+    padding-block: 84px 96px;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .hero-logo { margin: 0 0 0 -12px; width: min(600px, 100%); }
+  .hero-logo :global(img) { width: 100%; height: auto; filter: drop-shadow(0 8px 24px rgb(0 0 0 / .6)); }
+
+  .pitch {
+    margin: 0;
+    max-width: 560px;
+    font-size: clamp(17px, 1.6vw, 21px);
+    line-height: 1.6;
+    color: var(--mist);
+    text-wrap: pretty;
+  }
+  .pitch :global(strong) { color: var(--gold-lite); font-weight: 700; }
+  .pitch.dim { color: var(--mist-2); font-size: clamp(16px, 1.4vw, 18px); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 6px; }
+
+  /* --- the card fan --- */
+
+  .fan {
+    position: relative;
+    height: 480px;
+  }
+  .slot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px;
+    transition: transform .3s ease;
+  }
+  .slot-0 { transform: translate(-108%, -46%) rotate(-11deg); }
+  .slot-1 { transform: translate(-50%, -54%); z-index: 2; }
+  .slot-2 { transform: translate(8%, -46%) rotate(11deg); }
+  .fan:hover .slot-0 { transform: translate(-122%, -48%) rotate(-14deg); }
+  .fan:hover .slot-2 { transform: translate(22%, -48%) rotate(14deg); }
+
+  @media (max-width: 1100px) {
+    .slot { width: 200px; }
+    .fan { height: 400px; }
+  }
+
+  @media (max-width: 900px) {
+    .inner { grid-template-columns: minmax(0, 1fr); padding-block: 40px 48px; gap: 8px; }
+    .col { gap: 18px; }
+    .hero-logo { margin-left: -6px; width: 100%; }
+    .backdrop { opacity: .5; }
+    .wash { background: linear-gradient(180deg, rgb(17 12 29 / .55) 0%, rgb(17 12 29 / .85) 60%, var(--night) 100%); }
+    .actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .fan { order: -1; height: 230px; margin-bottom: 4px; }
+    .slot { width: 128px; }
+  }
+</style>

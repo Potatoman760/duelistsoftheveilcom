@@ -1,0 +1,53 @@
+---
+import { site } from '../data/site';
+import { copy } from '../data/copy';
+import { linkAttrs } from '../lib/links';
+import PatreonIcon from './PatreonIcon.astro';
+---
+
+<section class="band">
+  <div class="halftone veil"></div>
+  <div class="shell inner">
+    <div class="copy">
+      <h2 class="h2">{copy.patreon.heading}</h2>
+      <p>{copy.patreon.body}</p>
+    </div>
+    <a class="btn btn-primary cta" href={site.patreonUrl} {...linkAttrs(site.patreonUrl)}>
+      <PatreonIcon size={19} />
+      {copy.patreon.cta}
+    </a>
+  </div>
+</section>
+
+<style>
+  .band {
+    position: relative;
+    background: linear-gradient(120deg, var(--veil-deep), var(--veil) 70%);
+    border-top: 3px solid var(--ink);
+    padding-block: 68px;
+  }
+
+  .veil { position: absolute; inset: 0; }
+
+  .inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 44px;
+    flex-wrap: wrap;
+  }
+
+  .copy { display: flex; flex-direction: column; gap: 12px; max-width: 620px; }
+  .copy .h2 { color: var(--mist-hi); font-size: clamp(27px, 3vw, 40px); }
+  .copy p { margin: 0; font-size: 18px; line-height: 1.6; color: var(--veil-lite); }
+
+  .cta { min-height: 60px; font-size: 16px; }
+
+  @media (max-width: 900px) {
+    .band { padding-block: 42px; }
+    .inner { gap: 20px; }
+    .copy p { font-size: 16px; }
+    .cta { width: 100%; }
+  }
+</style>

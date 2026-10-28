@@ -1,0 +1,193 @@
+---
+import { Image } from 'astro:assets';
+import { nav, site } from '../data/site';
+import { copy } from '../data/copy';
+import { linkAttrs } from '../lib/links';
+import logo from '../assets/brand/bloom-wars-logo.png';
+import PatreonIcon from './PatreonIcon.astro';
+
+interface Props {
+  /** Path of the current page, used to mark the active nav link. */
+  path: string;
+}
+const { path } = Astro.props;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header">
+  <div class="shell bar">
+    <a href="/" class="brand" aria-label={`${site.name} — ${copy.ui.header.homeSuffix}`}>
+      <Image src={logo} alt={site.name} widths={[200, 400, 600]} sizes="(max-width: 900px) 150px, 200px" />
+    </a>
+
+    <nav class="desktop-nav" aria-label={copy.ui.header.navLabel}>
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={['navlink', { on: isCurrent(item.href) }]}
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a class="btn btn-primary patreon-cta" href={site.patreonUrl} {...linkAttrs(site.patreonUrl)}>
+        <PatreonIcon />
+        {copy.ui.header.patreonShort}
+      </a>
+    </nav>
+
+    <button type="button" class="menu-btn" data-menu-open aria-label={copy.ui.header.openMenu} aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+        <path d="M3.5 7h17M3.5 12h17M3.5 17h17"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<dialog class="drawer" data-menu aria-label={copy.ui.header.menuLabel}>
+  <div class="drawer-inner">
+    <div class="drawer-top">
+      <button type="button" class="menu-btn close" data-menu-close aria-label={copy.ui.header.closeMenu}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19"></path>
+        </svg>
+      </button>
+    </div>
+    {nav.map((item) => <a class="drawer-link" href={item.href}>{item.label}</a>)}
+    <a class="btn btn-primary drawer-cta" href={site.patreonUrl} {...linkAttrs(site.patreonUrl)}>
+      <PatreonIcon />
+      {copy.ui.header.patreonLong}
+    </a>
+  </div>
+</dialog>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(17 12 29 / .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px solid var(--night-3);
+  }
+
+  .bar {
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .brand { display: flex; align-items: center; }
+  .brand :global(img) { height: 60px; width: auto; display: block; }
+
+  .desktop-nav { display: flex; align-items: center; gap: 4px; }
+
+  .navlink {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--mist-2);
+    border-bottom: 3px solid transparent;
+  }
+  .navlink:hover { color: var(--mist-hi); border-bottom-color: var(--night-4); }
+  .navlink.on { color: var(--mist-hi); border-bottom-color: var(--gold); }
+
+  .patreon-cta {
+    margin-left: 18px;
+    min-height: 44px;
+    font-size: 13px;
+    box-shadow: 4px 5px 0 var(--ink);
+  }
+
+  .menu-btn {
+    display: none;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    background: var(--night-2);
+    color: var(--mist-hi);
+    border: 2px solid var(--night-4);
+    cursor: pointer;
+  }
+
+  /* --- drawer ------------------------------------------------------------ */
+
+  .drawer {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--night);
+    color: var(--mist);
+  }
+  .drawer::backdrop { background: rgb(8 5 14 / .8); }
+
+  .drawer-inner { display: flex; flex-direction: column; gap: 8px; padding: 20px 16px 32px; }
+
+  .drawer-top { display: flex; justify-content: flex-end; height: 48px; }
+
+  .drawer .menu-btn.close { display: flex; background: transparent; }
+
+  .drawer-link {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--mist-hi);
+    border-bottom: 2px solid var(--night-3);
+  }
+  .drawer-link:hover { color: var(--gold-lite); }
+
+  .drawer-cta { margin-top: 24px; }
+
+  @media (max-width: 900px) {
+    .bar { height: 68px; }
+    .brand :global(img) { height: 46px; }
+    .desktop-nav { display: none; }
+    .menu-btn { display: flex; }
+  }
+</style>
+
+<script>
+  const drawer = document.querySelector<HTMLDialogElement>('[data-menu]');
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+
+  if (drawer && openBtn) {
+    const collapsed = () => openBtn.setAttribute('aria-expanded', 'false');
+
+    /** Reset the button in the close path itself rather than relying on the
+     *  `close` event, which only covers the ESC route below. */
+    const close = () => {
+      drawer.close();
+      collapsed();
+    };
+
+    openBtn.addEventListener('click', () => {
+      drawer.showModal();
+      openBtn.setAttribute('aria-expanded', 'true');
+    });
+
+    drawer.querySelector('[data-menu-close]')?.addEventListener('click', close);
+
+    // following a link should not leave the drawer open behind the new page
+    drawer.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+
+    // ESC closes without going through the handlers above
+    drawer.addEventListener('close', collapsed);
+  }
+</script>

@@ -1,0 +1,145 @@
+---
+import Arrow from './Arrow.astro';
+import { copy } from '../data/copy';
+
+interface Props {
+  /** Accessible name for the group, e.g. "The women of Breedhaven". */
+  label: string;
+  /** Number of items in the default slot — used for the range readout. */
+  total: number;
+  /** Cards visible at once from 901px up. */
+  perView?: number;
+  gap?: number;
+  /** Fixed card width below 901px, so the next card peeks past the edge. */
+  cardMobile?: string;
+  /** Ink section? Only affects the count colour. */
+  onInk?: boolean;
+}
+
+const { label, total, perView = 3, gap = 18, cardMobile = '280px', onInk = false } = Astro.props;
+
+const shown = Math.min(perView, total);
+---
+
+<div class="carousel" data-carousel>
+  <div class="head">
+    <div class="head-text"><slot name="heading" /></div>
+
+    <div class="rail-controls" data-controls>
+      <span class="rail-count" data-count style={onInk ? 'color: var(--ink-4)' : undefined}>
+        {total ? `1–${shown} ${copy.ui.carousel.of} ${total}` : ''}
+      </span>
+      <div class="buttons">
+        <button type="button" class="rail-btn" data-prev aria-label={`${copy.ui.carousel.prev} — ${label}`} disabled>
+          <Arrow dir="left" />
+        </button>
+        <button
+          type="button"
+          class="rail-btn"
+          data-next
+          aria-label={`${copy.ui.carousel.next} — ${label}`}
+          disabled={total <= perView}
+        >
+          <Arrow dir="right" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="rail"
+    data-rail
+    data-of={copy.ui.carousel.of}
+    role="group"
+    aria-label={label}
+    tabindex="0"
+    style={`--per-view: ${perView}; --rail-gap: ${gap}px; --card-mobile: ${cardMobile};`}
+  >
+    <slot />
+  </div>
+</div>
+
+<style>
+  .carousel { display: flex; flex-direction: column; gap: 20px; }
+
+  .head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .head-text { flex: 1 1 420px; }
+
+  .buttons { display: flex; gap: 10px; }
+
+  /* the head collapses to just the heading when the arrows are hidden */
+  @media (max-width: 900px) {
+    .head { gap: 0; }
+  }
+</style>
+
+<script>
+  const RAIL_EPSILON = 1;
+
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const rail = root.querySelector<HTMLElement>('[data-rail]');
+    if (!rail) return;
+
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    const count = root.querySelector<HTMLElement>('[data-count]');
+    const total = rail.childElementCount;
+
+    /** Card pitch and how many fit, measured rather than assumed — the card
+     *  width is a calc() that changes with the viewport. */
+    const measure = () => {
+      const first = rail.firstElementChild as HTMLElement | null;
+      if (!first) return { step: 1, perView: 1 };
+      const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+      const step = first.getBoundingClientRect().width + gap;
+      const perView = Math.max(1, Math.round((rail.clientWidth + gap) / step));
+      return { step, perView };
+    };
+
+    const sync = () => {
+      const { step, perView } = measure();
+      const max = rail.scrollWidth - rail.clientWidth;
+
+      if (prev) prev.disabled = rail.scrollLeft <= RAIL_EPSILON;
+      if (next) next.disabled = rail.scrollLeft >= max - RAIL_EPSILON;
+
+      if (count && total) {
+        const lo = Math.max(1, Math.min(total - perView + 1, Math.round(rail.scrollLeft / step) + 1));
+        const of = rail.dataset.of || 'of';
+        count.textContent = `${lo}–${Math.min(total, lo + perView - 1)} ${of} ${total}`;
+      }
+    };
+
+    const page = (dir: number) => {
+      const { step, perView } = measure();
+      rail.scrollBy({ left: dir * step * perView, behavior: 'smooth' });
+    };
+
+    prev?.addEventListener('click', () => page(-1));
+    next?.addEventListener('click', () => page(1));
+
+    let queued = false;
+    rail.addEventListener(
+      'scroll',
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          sync();
+        });
+      },
+      { passive: true },
+    );
+
+    new ResizeObserver(sync).observe(rail);
+    sync();
+  });
+</script>

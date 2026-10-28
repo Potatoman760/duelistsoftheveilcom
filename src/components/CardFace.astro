@@ -1,0 +1,268 @@
+---
+import { Image } from 'astro:assets';
+import type { ShowcaseCard } from '../data/cards';
+import { factionById } from '../data/factions';
+import { copy } from '../data/copy';
+import Sigil from './Sigil.astro';
+
+interface Props {
+  card: ShowcaseCard;
+  /** `sizes` for the art; the card's width on screen. */
+  sizes?: string;
+  eager?: boolean;
+}
+const { card, sizes = '(max-width: 900px) 240px, 280px', eager = false } = Astro.props;
+
+const accent = factionById[card.factions[0]].color;
+const banner = [card.type, card.world].filter(Boolean).join(' · ');
+
+/**
+ * Rules text, one line per ability, split the way the game prints it: a
+ * trigger ("When Played:") or keyword ("SENTINEL") in bold, reminder text in
+ * parentheses dimmed.
+ */
+const lines = card.text
+  .split('\n')
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const colon = line.indexOf(':');
+    const paren = line.indexOf('(');
+    if (colon > 0 && colon < 34 && (paren < 0 || colon < paren)) {
+      return { lead: line.slice(0, colon + 1), rest: line.slice(colon + 1), note: '' };
+    }
+    const isKeyword = /^[A-Z][A-Za-z]+( \d+)?\b/.test(line) && (paren > 0 || line.length < 20);
+    if (isKeyword) {
+      const head = (paren > 0 ? line.slice(0, paren) : line).trim();
+      const pretty = head.charAt(0) + head.slice(1).toLowerCase();
+      return { lead: pretty, rest: '', note: paren > 0 ? line.slice(paren) : '' };
+    }
+    return { lead: '', rest: line, note: '' };
+  });
+---
+
+<article
+  class:list={['cardface', { legendary: card.rarity === 'legendary' }]}
+  style={`--accent: ${accent}`}
+  aria-label={`${card.name}${card.subtitle ? `, ${card.subtitle}` : ''}`}
+>
+  <div class="frame">
+    <div class="art">
+      <Image src={card.art} alt="" widths={[300, 560]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+    </div>
+
+    <span class="cost" title={copy.ui.card.cost}>{card.cost}</span>
+
+    <div class="sigils">
+      {card.factions.map((f) => <span class="sigil"><Sigil faction={f} size={14} weight={2.4} labelled /></span>)}
+    </div>
+
+    <header class="head">
+      <span class="banner">{banner}</span>
+      <h3 class="name">{card.name}</h3>
+      {card.subtitle && <span class="sub">{card.subtitle}</span>}
+    </header>
+
+    <div class="body">
+      <span class="traits">{card.traits.join(' · ')}</span>
+      <div class="text">
+        {
+          lines.map((l) => (
+            <p>
+              {l.lead && <b>{l.lead}</b>}
+              {l.rest}
+              {l.note && <span class="note"> {l.note}</span>}
+            </p>
+          ))
+        }
+      </div>
+    </div>
+
+    {card.power !== undefined && <span class="stat power" title={copy.ui.card.power}>{card.power}</span>}
+    {card.hp !== undefined && <span class="stat hp" title={copy.ui.card.hp}>{card.hp}</span>}
+  </div>
+</article>
+
+<style>
+  /* Everything inside scales with the card's own width (cqi), so one
+     component works in the hero fan, the rail and on a phone. */
+  .cardface {
+    container-type: inline-size;
+    aspect-ratio: 5 / 7;
+    width: 100%;
+  }
+
+  .frame {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2.6cqi;
+    border: 3px solid var(--ink);
+    border-radius: 4.5cqi;
+    background:
+      linear-gradient(160deg, color-mix(in oklab, var(--accent) 55%, var(--night-2)), var(--night-2) 60%);
+    box-shadow: 6px 7px 0 rgb(0 0 0 / .45);
+    overflow: hidden;
+  }
+
+  /* a sweep of foil on legendaries */
+  .legendary .frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgb(255 240 200 / .22) 45%, rgb(196 172 255 / .18) 52%, transparent 66%);
+    background-size: 250% 250%;
+    animation: foil 6s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+  @keyframes foil {
+    0%, 100% { background-position: 100% 100%; }
+    50% { background-position: 0% 0%; }
+  }
+
+  .art {
+    position: absolute;
+    inset: 2.6cqi 2.6cqi 38% 2.6cqi;
+    border-radius: 3cqi 3cqi 0 0;
+    overflow: hidden;
+    border: 2px solid var(--ink);
+  }
+  .art :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+
+  .cost {
+    position: absolute;
+    top: 1.2cqi;
+    left: 1.2cqi;
+    z-index: 2;
+    width: 15cqi;
+    height: 17cqi;
+    display: grid;
+    place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--gold);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 9.5cqi;
+    line-height: 1;
+  }
+
+  .sigils {
+    position: absolute;
+    top: 3.5cqi;
+    right: 3.5cqi;
+    z-index: 2;
+    display: flex;
+    gap: 1.2cqi;
+  }
+  .sigil {
+    width: 8.5cqi;
+    height: 8.5cqi;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgb(17 12 29 / .85);
+    border: 1px solid rgb(255 255 255 / .15);
+  }
+  .sigil :global(svg) { width: 62%; height: 62%; }
+
+  /* the name plate straddles the bottom edge of the art and the top of the
+     rules box */
+  .head {
+    position: absolute;
+    z-index: 1;
+    left: 15cqi;
+    right: 15cqi;
+    bottom: calc(38% - 6cqi);
+    padding: 1.4cqi 3cqi 1.6cqi;
+    background: var(--vellum-hi);
+    border: 2px solid var(--ink);
+    border-radius: 2cqi;
+    text-align: center;
+    color: var(--ink);
+    box-shadow: 0 2px 0 rgb(0 0 0 / .35);
+  }
+
+  .banner {
+    display: block;
+    font-size: 3.6cqi;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--accent) 45%, var(--ink));
+  }
+
+  .name {
+    margin: .4cqi 0 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 6.2cqi;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .sub {
+    display: block;
+    margin-top: .4cqi;
+    font-size: 3.6cqi;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .body {
+    position: absolute;
+    left: 2.6cqi;
+    right: 2.6cqi;
+    bottom: 2.6cqi;
+    top: 62%;
+    display: flex;
+    flex-direction: column;
+    background: var(--vellum);
+    border: 2px solid var(--ink);
+    border-radius: 0 0 3cqi 3cqi;
+    color: var(--ink);
+    padding: 7cqi 5cqi 4cqi;
+    overflow: hidden;
+  }
+
+  .traits {
+    font-size: 3.4cqi;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: center;
+    margin-bottom: 1.6cqi;
+  }
+
+  .text { display: flex; flex-direction: column; gap: 1.2cqi; }
+  .text p { margin: 0; font-size: 4.3cqi; line-height: 1.32; text-wrap: pretty; }
+  .text b { font-weight: 800; }
+  .text .note { color: var(--ink-3); font-style: italic; }
+
+  .stat {
+    position: absolute;
+    z-index: 2;
+    top: calc(62% - 7cqi);
+    width: 13cqi;
+    height: 14.5cqi;
+    display: grid;
+    place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 8cqi;
+    line-height: 1;
+  }
+  .power { left: 1.5cqi; background: #c8443d; }
+  .hp { right: 1.5cqi; background: #3a7fd0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .legendary .frame::after { animation: none; }
+  }
+</style>

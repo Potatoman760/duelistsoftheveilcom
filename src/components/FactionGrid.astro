@@ -1,0 +1,75 @@
+---
+import { copy } from '../data/copy';
+import { factions } from '../data/factions';
+import Sigil from './Sigil.astro';
+---
+
+<section class="factions stars">
+  <div class="shell inner">
+    <header class="section-head">
+      <span class="kicker gold">{copy.factionsSection.kicker}</span>
+      <h2 class="h2 pale">{copy.factionsSection.heading}</h2>
+      <p class="lede">{copy.factionsSection.lede}</p>
+    </header>
+
+    <div class="grid">
+      {
+        factions.map((f) => (
+          <article class="faction" style={`--fc: ${f.color}`}>
+            <span class="mark"><Sigil faction={f.id} size={30} weight={1.9} /></span>
+            <h3 class="name">{f.name}</h3>
+            <span class="motto">{f.motto}</span>
+            <p class="play">{f.playstyle}</p>
+            <p class="beasts">{f.beasts}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .factions { background: var(--night); padding-block: 92px 100px; }
+  .inner { position: relative; display: flex; flex-direction: column; gap: 48px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+
+  .faction {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 24px 26px;
+    background: linear-gradient(160deg, color-mix(in oklab, var(--fc) 16%, var(--night-2)), var(--night-2) 70%);
+    border: 2px solid color-mix(in oklab, var(--fc) 40%, var(--night-3));
+    border-top: 4px solid var(--fc);
+  }
+
+  .mark {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--night);
+    border: 2px solid color-mix(in oklab, var(--fc) 50%, transparent);
+    margin-bottom: 6px;
+  }
+
+  .name { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 23px; color: var(--mist-hi); }
+  .motto { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--fc); }
+  .play { margin: 6px 0 0; font-size: 16px; line-height: 1.55; color: var(--mist); }
+  .beasts { margin: 0; font-size: 14px; color: var(--mist-3); font-style: italic; }
+
+  @media (max-width: 1000px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .factions { padding-block: 48px 52px; }
+    .inner { gap: 24px; }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .faction { padding: 18px; }
+  }
+</style>

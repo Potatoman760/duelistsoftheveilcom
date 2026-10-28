@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import type { Screenshot } from '../data/screenshots';
+
+interface Props {
+  shot: Screenshot;
+  id: string;
+}
+const { shot, id } = Astro.props;
+---
+
+<button type="button" class="card ink-box shot-card" data-lb-open={id}>
+  <Image
+    src={shot.image}
+    alt={shot.alt}
+    widths={[360, 720, 1080]}
+    sizes="(max-width: 900px) 300px, (max-width: 1280px) 33vw, 358px"
+    class="shot"
+  />
+  <span class="cap">
+    <span class="title">{shot.title}</span>
+    <span class="mode">{shot.mode}</span>
+  </span>
+</button>
+
+<style>
+  .shot-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: var(--night-2);
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+
+  .shot { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+  .cap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--vellum);
+    border-top: 3px solid var(--ink);
+    padding: 13px 16px;
+  }
+
+  .title { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--ink); }
+
+  .mode {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--veil-deep);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 900px) {
+    .cap { padding: 11px 14px; }
+    .title { font-size: 14.5px; }
+  }
+</style>

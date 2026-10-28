@@ -1,0 +1,194 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FactionGrid from '../components/FactionGrid.astro';
+import PatreonBand from '../components/PatreonBand.astro';
+import { copy } from '../data/copy';
+import { duelFlow, concepts } from '../data/rules';
+import duelShot from '../assets/screenshots/duel-midgame.jpg';
+import cardShot from '../assets/screenshots/card-preview.jpg';
+
+const t = copy.howToPlay;
+---
+
+<Layout title={t.pageTitle} description={t.description}>
+  <section class="intro stars">
+    <div class="shell intro-inner">
+      <header class="head">
+        <span class="kicker gold">{t.kicker}</span>
+        <h1 class="h1 pale">{t.heading}</h1>
+        <p class="lede">{t.lede}</p>
+      </header>
+      <Image
+        src={duelShot}
+        alt="A duel in progress: both players' units in the Waking World and the Dreaming, with the two Anchors in the centre"
+        widths={[800, 1200, 1800]}
+        sizes="(max-width: 1200px) 92vw, 1120px"
+        class="hero-shot ink-box"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <!-- ---------------- a round ---------------- -->
+  <section class="flow vellum grain">
+    <div class="shell inner">
+      <header class="section-head">
+        <span class="kicker violet">{t.flowKicker}</span>
+        <h2 class="h2">{t.flowHeading}</h2>
+      </header>
+      <ol class="steps">
+        {
+          duelFlow.map((step, i) => (
+            <li class="step ink-box-sm">
+              <span class="num">{i + 1}</span>
+              <span class="kicker violet label">{step.label}</span>
+              <h3 class="h3">{step.title}</h3>
+              <p>{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ---------------- two worlds ---------------- -->
+  <section class="worlds stars">
+    <div class="shell inner">
+      <header class="section-head">
+        <span class="kicker gold">{t.worldsKicker}</span>
+        <h2 class="h2 pale">{t.worldsHeading}</h2>
+      </header>
+      <div class="world-grid">
+        {
+          [
+            { ...t.waking, cls: 'waking' },
+            { ...t.dreaming, cls: 'dreaming' },
+          ].map((w) => (
+            <article class:list={['world', w.cls]}>
+              <h3 class="h3">{w.title}</h3>
+              <span class="motto">{w.motto}</span>
+              <p>{w.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- concepts ---------------- -->
+  <section class="concepts vellum grain">
+    <div class="shell inner">
+      <header class="section-head">
+        <span class="kicker violet">{t.conceptsKicker}</span>
+        <h2 class="h2">{t.conceptsHeading}</h2>
+      </header>
+      <div class="concept-layout">
+        <dl class="concept-list">
+          {
+            concepts.map((c) => (
+              <div class="concept">
+                <dt class="h3">{c.title}</dt>
+                <dd>{c.body}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <figure class="card-fig">
+          <Image
+            src={cardShot}
+            alt="The Malvoren leader card at full size beside her deployed unit side"
+            widths={[600, 1000]}
+            sizes="(max-width: 900px) 92vw, 460px"
+            class="ink-box"
+          />
+          <figcaption>{t.learnKicker}. {t.learnBody}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <FactionGrid />
+
+  <PatreonBand />
+</Layout>
+
+<style>
+  .inner { position: relative; display: flex; flex-direction: column; gap: 44px; }
+
+  /* --- intro --- */
+  .intro { background: var(--night); padding-block: 76px 88px; }
+  .intro-inner { position: relative; display: flex; flex-direction: column; gap: 48px; }
+  .head { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+  .hero-shot { width: 100%; height: auto; }
+
+  /* --- flow --- */
+  .flow { padding-block: 88px 96px; }
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .step { position: relative; background: var(--vellum-hi); padding: 28px 22px 26px; display: flex; flex-direction: column; gap: 10px; }
+  .step p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink-2); }
+  .num {
+    position: absolute;
+    top: -18px;
+    right: 18px;
+    width: 40px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--gold);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  /* --- worlds --- */
+  .worlds { background: var(--night); padding-block: 88px 96px; }
+  .world-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .world { padding: 30px 30px 32px; border: 2px solid var(--night-3); display: flex; flex-direction: column; gap: 10px; }
+  .world .h3 { color: var(--mist-hi); font-size: 28px; }
+  .world p { margin: 6px 0 0; color: var(--mist); }
+  .motto { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .waking { background: linear-gradient(160deg, #2e2a1d, var(--night-2) 70%); border-top: 4px solid var(--gold); }
+  .waking .motto { color: var(--gold); }
+  .dreaming { background: linear-gradient(160deg, #2e1f52, var(--night-2) 70%); border-top: 4px solid var(--veil-lite); }
+  .dreaming .motto { color: var(--veil-lite); }
+
+  /* --- concepts --- */
+  .concepts { padding-block: 88px 96px; }
+  .concept-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .concept-list { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+  .concept { border-top: 3px solid var(--ink); padding-top: 14px; }
+  .concept dt { font-size: 21px; }
+  .concept dd { margin: 8px 0 0; font-size: 16px; line-height: 1.6; color: var(--ink-2); }
+  .card-fig { margin: 0; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 110px; }
+  .card-fig figcaption { font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+
+  @media (max-width: 1000px) {
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; }
+    .concept-layout { grid-template-columns: minmax(0, 1fr); }
+    .card-fig { position: static; }
+  }
+
+  @media (max-width: 900px) {
+    .inner { gap: 28px; }
+    .intro { padding-block: 40px 48px; }
+    .intro-inner { gap: 28px; }
+    .flow, .worlds, .concepts { padding-block: 48px 56px; }
+    .world-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .world { padding: 22px 18px; }
+  }
+
+  @media (max-width: 600px) {
+    .steps { grid-template-columns: minmax(0, 1fr); }
+    .concept-list { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  }
+</style>

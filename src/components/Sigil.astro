@@ -1,0 +1,29 @@
+---
+import { factionById, type FactionId } from '../data/factions';
+
+interface Props {
+  faction: FactionId;
+  size?: number;
+  /** Stroke width on the 24px grid. */
+  weight?: number;
+  /** Announce the faction name; off when a visible label sits next to it. */
+  labelled?: boolean;
+}
+const { faction, size = 24, weight = 2, labelled = false } = Astro.props;
+const f = factionById[faction];
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke={f.color}
+  stroke-width={weight}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={labelled ? 'img' : undefined}
+  aria-label={labelled ? f.name : undefined}
+  aria-hidden={labelled ? undefined : 'true'}
+  set:html={f.sigil}
+/>

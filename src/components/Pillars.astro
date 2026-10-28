@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import { copy } from '../data/copy';
+import neonRow from '../assets/screenshots/neon-row.jpg';
+import duel from '../assets/screenshots/duel-midgame.jpg';
+
+const pillars = [
+  { ...copy.pillars.adventure, image: neonRow, alt: 'A top-down view of Neon Row at night, with shops and people on the street' },
+  { ...copy.pillars.duel, image: duel, alt: 'A duel in progress, with units in both worlds and two Anchors in the middle' },
+];
+---
+
+<section class="pillars vellum grain">
+  <div class="shell inner">
+    <header class="section-head">
+      <span class="kicker violet">{copy.pillars.kicker}</span>
+      <h2 class="h2">{copy.pillars.heading}</h2>
+    </header>
+
+    <div class="grid">
+      {
+        pillars.map((p) => (
+          <article class="pillar ink-box">
+            <Image src={p.image} alt={p.alt} widths={[560, 1120]} sizes="(max-width: 900px) 92vw, 560px" class="shot" />
+            <div class="text">
+              <span class="kicker violet">{p.label}</span>
+              <h3 class="h3">{p.title}</h3>
+              <p>{p.body}</p>
+              <ul>
+                {p.points.map((point) => <li>{point}</li>)}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars { padding-block: 92px 100px; }
+  .inner { position: relative; display: flex; flex-direction: column; gap: 48px; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+
+  .pillar { background: var(--vellum-hi); display: flex; flex-direction: column; }
+  .shot { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-bottom: 3px solid var(--ink); }
+
+  .text { padding: 26px 28px 30px; display: flex; flex-direction: column; gap: 12px; }
+  .text p { margin: 0; color: var(--ink-2); font-size: 17px; line-height: 1.65; }
+
+  ul { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  li {
+    position: relative;
+    padding-left: 24px;
+    font-weight: 700;
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+  li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: .5em;
+    width: 9px;
+    height: 9px;
+    background: var(--veil);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 900px) {
+    .pillars { padding-block: 48px 52px; }
+    .inner { gap: 24px; }
+    .grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .text { padding: 20px 18px 22px; }
+  }
+</style>
